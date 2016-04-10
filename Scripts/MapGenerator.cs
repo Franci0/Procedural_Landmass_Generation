@@ -25,6 +25,8 @@ public class MapGenerator : MonoBehaviour
 
 	public bool autoUpdate;
 
+	public Noise.NormalizeMode normalizeMode;
+
 	public TerrainType[] regions;
 
 	Queue<MapThreadInfo<MapData>> mapDataThreadInfoQueue = new Queue<MapThreadInfo<MapData>> ();
@@ -106,7 +108,7 @@ public class MapGenerator : MonoBehaviour
 
 	MapData GenerateMapData (Vector2 centre)
 	{
-		float[,] noiseMap = Noise.GenerateNoiseMap (MAP_CHUNK_SIZE, MAP_CHUNK_SIZE, seed, noiseScale, octaves, persistance, lacunarity, centre + offset);
+		float[,] noiseMap = Noise.GenerateNoiseMap (MAP_CHUNK_SIZE, MAP_CHUNK_SIZE, seed, noiseScale, octaves, persistance, lacunarity, centre + offset, normalizeMode);
 
 		Color[] colorMap = new Color[MAP_CHUNK_SIZE * MAP_CHUNK_SIZE];
 
@@ -114,8 +116,9 @@ public class MapGenerator : MonoBehaviour
 			for (int x = 0; x < MAP_CHUNK_SIZE; x++) {
 				float currentHeight = noiseMap [x, y];
 				for (int i = 0; i < regions.Length; i++) {
-					if (currentHeight <= regions [i].height) {
+					if (currentHeight >= regions [i].height) {
 						colorMap [y * MAP_CHUNK_SIZE + x] = regions [i].color;
+					} else {
 						break;
 					}
 				}
