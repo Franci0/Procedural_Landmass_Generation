@@ -5,7 +5,7 @@ using System.Threading;
 
 public class MapGenerator : MonoBehaviour
 {
-	public const int MAP_CHUNK_SIZE = 241;
+	public const int MAP_CHUNK_SIZE = 239;
 
 	[Range (0, 6)]
 	public int editorPreviewLOD;
@@ -118,7 +118,7 @@ public class MapGenerator : MonoBehaviour
 
 	MapData GenerateMapData (Vector2 centre)
 	{
-		float[,] noiseMap = Noise.GenerateNoiseMap (MAP_CHUNK_SIZE, MAP_CHUNK_SIZE, seed, noiseScale, octaves, persistance, lacunarity, centre + offset, normalizeMode);
+		float[,] noiseMap = Noise.GenerateNoiseMap (MAP_CHUNK_SIZE + 2, MAP_CHUNK_SIZE + 2, seed, noiseScale, octaves, persistance, lacunarity, centre + offset, normalizeMode);
 
 		Color[] colorMap = new Color[MAP_CHUNK_SIZE * MAP_CHUNK_SIZE];
 
